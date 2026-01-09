@@ -205,6 +205,10 @@ Possible Errors: * Invalid credentials
 
 User not found
 
+Notes:
+- JWT token must be sent in Authorization header for protected APIs
+
+
 2. POST /auth/register (Optional)
    Called by: * New User
 
@@ -269,7 +273,7 @@ Possible Errors:
 - Bid amount less than current highest bid
 - User not authenticated
 
-5API: POST /auctions/start
+5. API: POST /auctions/start
 
 Called by:
 - Admin
@@ -290,6 +294,10 @@ Possible Errors:
 - Product not found
 - Auction already exists
 - User not authorized
+
+Notes:
+- One product can have only one auction
+
 
 6. API: POST /auctions/end
 
