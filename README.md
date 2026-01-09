@@ -182,3 +182,131 @@ Cloud deployment with monitoring and logging.
 
 Improved security and rate limiting.
 
+API's:
+
+1. POST /auth/login
+   Called by: * Any User (Admin or Bidder)
+
+Purpose: * Authenticates a user and provides a session token (JWT) for future requests.
+
+Input: * email
+
+password
+
+Output (Success): * token
+
+userId
+
+role (e.g., "admin" or "bidder")
+
+message
+
+Possible Errors: * Invalid credentials
+
+User not found
+
+2. POST /auth/register (Optional)
+   Called by: * New User
+
+Purpose: * Creates a new account in the system.
+
+Input: * username
+
+email
+
+password
+
+role (default: "bidder")
+
+Output (Success): * userId
+
+message
+
+Possible Errors: * Email already exists
+
+Weak password
+
+3. POST /products
+   Called by: * Admin
+
+Purpose: * Adds a new product to the inventory that can later be put up for auction.
+
+Input: * name
+
+description
+
+basePrice
+
+imageUrl
+
+Output (Success): * productId
+
+message
+
+Possible Errors: * Unauthorized (Non-admin access)
+
+Invalid product data (e.g., negative base price)
+
+4. API: POST /bids
+
+Called by:
+- Bidder
+
+Purpose:
+- Allows a bidder to place a bid on an active auction
+
+Input:
+- auctionId
+- bidAmount
+
+Output (Success):
+- bidId
+- updatedHighestBid
+- message
+
+Possible Errors:
+- Auction not active
+- Bid amount less than current highest bid
+- User not authenticated
+
+5API: POST /auctions/start
+
+Called by:
+- Admin
+
+Purpose:
+- Starts an auction for a product
+
+Input:
+- productId
+- startTime
+- endTime
+
+Output (Success):
+- auctionId
+- status (ACTIVE)
+
+Possible Errors:
+- Product not found
+- Auction already exists
+- User not authorized
+
+6. API: POST /auctions/end
+
+Called by:
+- Admin
+
+Purpose:
+- Ends an active auction and declares winner
+
+Input:
+- auctionId
+
+Output (Success):
+- winnerUserId
+- winningBidAmount
+- message
+
+Possible Errors:
+- Auction not active
+- Auction not found
