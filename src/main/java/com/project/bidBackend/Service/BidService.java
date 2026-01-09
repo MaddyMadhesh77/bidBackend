@@ -1,11 +1,17 @@
 package com.project.bidBackend.Service;
 
+import com.project.bidBackend.Repo.AuctionRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BidService{
 
-    public void placeBid(int auctionId,double bidAmount){
+    @Autowired
+    AuctionRepo auctionRepo;
+
+    public void placeBid(int userId,int auctionId,double bidAmount){
+        auctionRepo.findById(auctionId);
         //1. Fetch auction by auctionId
         //2. Check auction exists
         //3. Check auction status == ACTIVE

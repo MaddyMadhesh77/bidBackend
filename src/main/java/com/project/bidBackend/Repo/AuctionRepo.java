@@ -1,4 +1,7 @@
 package com.project.bidBackend.Repo;
 
-public class AuctionRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AuctionRepo extends JpaRepository {
+
 }
