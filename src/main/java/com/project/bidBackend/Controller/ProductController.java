@@ -1,6 +1,5 @@
 package com.project.bidBackend.Controller;
 
-import com.project.bidBackend.Model.Product;
 import com.project.bidBackend.Service.ProductService;
 import com.project.bidBackend.dto.CreateProductRequest;
 import com.project.bidBackend.dto.ProductResponse;
