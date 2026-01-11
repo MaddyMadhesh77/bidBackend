@@ -6,6 +6,7 @@ import com.project.bidBackend.Repo.BidRepo;
 import com.project.bidBackend.Repo.UserRepo;
 import com.project.bidBackend.dto.BidResponse;
 import com.project.bidBackend.dto.PlaceBidRequest;
+import com.project.bidBackend.websocket.BidUpdatePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,14 @@ public class BidService{
     private final BidRepo bidRepo;
     private final AuctionRepo auctionRepo;
     private final UserRepo userRepo;
+    private final BidUpdatePublisher bidUpdatePublisher;
 
-    public BidService(BidRepo bidRepo, AuctionRepo auctionRepo, UserRepo userRepo) {
+
+    public BidService(BidRepo bidRepo, AuctionRepo auctionRepo, UserRepo userRepo, BidUpdatePublisher bidUpdatePublisher) {
         this.bidRepo = bidRepo;
         this.auctionRepo = auctionRepo;
         this.userRepo = userRepo;
+        this.bidUpdatePublisher = bidUpdatePublisher;
     }
 
     public BidResponse placeBid(Long userId, PlaceBidRequest request){
@@ -72,6 +76,13 @@ public class BidService{
         response.setBidId(bid.getId());
         response.setCurrentHighestBid(auction.getCurrentHighestBid());
         response.setMessage("Bid placed successfully");
+
+        bidUpdatePublisher.broadcastBidUpdate(
+                auction.getId(),
+                auction.getCurrentHighestBid(),
+                bidder.getId()
+        );
+
 
         return response;
     }
