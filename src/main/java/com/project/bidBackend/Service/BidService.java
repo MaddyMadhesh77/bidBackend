@@ -7,7 +7,9 @@ import com.project.bidBackend.Repo.UserRepo;
 import com.project.bidBackend.dto.BidResponse;
 import com.project.bidBackend.dto.PlaceBidRequest;
 import com.project.bidBackend.websocket.BidUpdatePublisher;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,7 @@ public class BidService{
         this.bidUpdatePublisher = bidUpdatePublisher;
     }
 
+    @Transactional
     public BidResponse placeBid(Long userId, PlaceBidRequest request){
         //1. Fetch auction by auctionId
         //2. Check auction exists
@@ -87,6 +90,14 @@ public class BidService{
                 auction.getCurrentHighestBid(),
                 bidder.getId()
         );
+
+        try {
+            auction.setCurrentHighestBid(request.getBidAmount());
+            auctionRepo.save(auction);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new RuntimeException("Bid conflict. Please retry.");
+        }
+
 
 
         return response;

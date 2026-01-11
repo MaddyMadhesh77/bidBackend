@@ -31,4 +31,8 @@ public class Auction {
 
     @Enumerated(EnumType.STRING)
     private AuctionStatus status;
+
+    @Version
+    private Long version;
+
 }
