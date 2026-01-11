@@ -54,6 +54,11 @@ public class BidService{
             throw new RuntimeException("Bid must be higher than current bid");
         }
 
+        if (auction.getStatus() == AuctionStatus.ENDED) {
+            throw new RuntimeException("Auction already ended");
+        }
+
+
         User bidder = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
